@@ -6,4 +6,5 @@ function SecondInput({ onNext }) {
   );
 }
 
+
 export default WelcomeScreen;

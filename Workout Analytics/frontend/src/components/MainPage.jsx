@@ -6,4 +6,5 @@ function MainPage({ onNext }) {
   );
 }
 
+
 export default WelcomeScreen;

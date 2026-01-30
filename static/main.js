@@ -4,3 +4,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize UI components
     initUIComponents();});
+
+function initUIComponents() {
+    // Add event listener to the button to navigate to the information page
+    const startButton = document.querySelector('button');
+    if (startButton) {
+        startButton.addEventListener('click', toInfoPage);
+    }
+}
+function newPage() {
+    document.getElementById(shown).style.display='block';
+    document.getElementById(hidden).style.display='none';
+    return false;
+}

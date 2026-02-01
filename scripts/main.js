@@ -12,7 +12,7 @@ function initUIComponents() {
         startButton.addEventListener('click', toInfoPage);
     }
 }
-function newPage() {
+function newPage(shown, hidden) {
     document.getElementById(shown).style.display='block';
     document.getElementById(hidden).style.display='none';
     return false;

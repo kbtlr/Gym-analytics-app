@@ -26,7 +26,12 @@
     <script src="./scripts/main.js" type="text/javascript"></script>
     <div id="Startup page">
         Welcome!
-        <a href="#" onclick="return newPage('Information Section', 'Startup page')">Click here to get started!</a>
+        <a href="#" onclick="return newPage('Login page', 'Startup page')">Click here to get started!</a>
+    </div>
+    <div id ="Login page" style ="display:none">
+        Please log in to continue.
+        <a href="#" onclick="return newPage('Home page', 'Login page')">Login placeholder</a>
+        <a href="#" onclick="return newPage('Information Section', 'Login page')">Register new details</a>
     </div>
     <div id="Information Section" style ="display:none">
         Please enter the required information below:
@@ -39,6 +44,7 @@
     </div>
     <div id="Home page" style ="display:none">
         Graph, stats, etc. go here.
+        <a href="#" onclick="return newPage('Startup page', 'Home page')">Log out</a>
     </div>
 </body>
 </html>

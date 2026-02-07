@@ -12,6 +12,27 @@ body {
     justify-content: center;
     color: #f9fafb;
 }
+a {
+    display: block;
+    margin: 15px auto 0;
+    width: fit-content;
+}
+.btn-primary {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #02d1c0;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+.btn-primary:hover {
+    background-color: #18c4f8;
+    transform: translateY(1px);
+}
+
+
 
 /*=====Individual Sections=====*/
 /*Startup*/

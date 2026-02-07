@@ -13,9 +13,8 @@ body {
     color: #f9fafb;
 }
 a {
-    display: block;
-    margin: 15px auto 0;
-    width: fit-content;
+  display: block !important;
+  margin-top: 15px !important;
 }
 .btn-primary {
     display: inline-block;
@@ -28,8 +27,9 @@ a {
     transition: 0.2s ease;
 }
 .btn-primary:hover {
-    background-color: #18c4f8;
+    background-color: #02d1c0;
     transform: translateY(1px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 

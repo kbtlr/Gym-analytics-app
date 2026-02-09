@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name=""viewport" content="width=device-width, initial-scale=1.0">
-    <title>My application</title>
+    <title>Your Gym Pal</title>
     <link rel="stylesheet" href="core-style.css"/>
 </head>
 
@@ -12,14 +12,14 @@
 
     <section id ="Startup">
         <div id="StartupPage">
-            <p>Welcome!</p>
+            <p>Welcome to your Gym Pal!</p>
             <a href="#" class="btn-primary" onclick="return newPage('LoginPage', 'StartupPage')">Click here to get started!</a>
         </div>
     </section>
 
     <section id="Login">
         <div id ="LoginPage" style ="display:none">
-            <p>Please log in to continue.</p>
+            <a>Please log in to continue:</a>
             <input type="text" placeholder="Username"/>
             <input type="password" placeholder="Password"/>
             <a href="#" class="btn-primary" onclick="return newPage('HomePage', 'LoginPage')">Confirm</a>
@@ -29,7 +29,7 @@
 
     <section id = "Information">
         <div id="InformationSection" style ="display:none">
-            <p>Please enter the required information below:</p>
+            <a>Please enter the required information below:</a>
             <input type="text" placeholder="Height"/>
             <input type="text" placeholder="Weight"/>
             <a href="#" class="btn-primary" onclick="return newPage('StartupPage', 'InformationSection')">Go back</a>

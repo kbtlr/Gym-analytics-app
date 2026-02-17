@@ -45,11 +45,16 @@ h3 {
     transform: translateY(1px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
-.HomeGrid {
+.HomeSub {
     flex: 1 1 45%;
+    display: inline-block;
+    border-radius: 8px;
     background: #02d1c0;
     padding: 20px;
     text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 
@@ -86,7 +91,7 @@ h3 {
     background: #02d1c0;
     padding: 40px;
     border-radius: 12px;
-    width: 720px;
+    width: 1080px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }

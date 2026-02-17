@@ -16,6 +16,7 @@ a {
   display: block !important;
   margin-top: 15px !important;
   margin-bottom: 15px !important;
+  text-align: center;
   font-size: 1.2em;
 }
 p {
@@ -23,6 +24,11 @@ p {
   margin-bottom: 15px;
   font-size: 2.2em;
   font-weight: 530;
+}
+h {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.2em;
 }
 .btn-primary {
     display: inline-block;

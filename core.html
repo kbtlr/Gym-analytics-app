@@ -29,11 +29,18 @@
 
     <section id = "Information">
         <div id="InformationSection" style ="display:none">
-            <a>Please enter the required information below:</a>
-            <input type="text" placeholder="Height"/>
-            <input type="text" placeholder="Weight"/>
+            <a>Lets set up your profile first:</a>
+            <input type="text" placeholder="Email Address"/>
+            <input type="text" placeholder="Username"/>
+            <input type="password" placeholder="Password"/>
+            <input type="password" placeholder="Confirm Password"/>
             <a href="#" class="btn-primary" onclick="return newPage('StartupPage', 'InformationSection')">Go back</a>
-            <a href="#" class="btn-primary" onclick="return newPage('HomePage', 'InformationSection')">Continue</a>
+            <a href="#" class="btn-primary" onclick="return newPage('InformationSection2', 'InformationSection')">Continue</a>
+        </div>
+        <div id="InformationSection2" style ="display:none">
+            <a>Please enter the required information below (More info needed, what metrics, what lifts, level of experience, length of program and aspiring volume):</a>
+            <a href="#" class="btn-primary" onclick="return newPage('InformationSection', 'InformationSection2')">Go back</a>
+            <a href="#" class="btn-primary" onclick="return newPage('HomePage', 'InformationSection2')">Continue</a>
         </div>
     </section>
 
@@ -43,6 +50,7 @@
             <div class="HomeGrid">
                 <div class="HomeSub">
                     <h3>Total Volume over Time:</h3>
+                    <graph id="VolumeGraph" width="400" height="400"></graph>
                     <br>Should be a graphical represenation of total sets*weight in a workout over time</br>
                 </div>
                 <div class="HomeSub">

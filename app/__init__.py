@@ -16,14 +16,14 @@ def create_app():
     # ── Extensions ──────────────────────────────────────────────────────────
     db.init_app(app)
     login_manager.init_app(app)
-    login_manager.login_view = "auth.login"   # redirect here if @login_required fails
+    login_manager.login_view = "auth.login"  # type: ignore[assignment]
 
     # Tells Flask-Login how to reload a user from the session cookie
     from .models import User
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        return db.session.get(User, int(user_id))
 
     # ── Blueprints ──────────────────────────────────────────────────────────
     app.register_blueprint(auth_bp)

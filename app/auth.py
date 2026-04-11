@@ -11,7 +11,7 @@ def login():
     Expects JSON: { "username": "...", "password": "..." }
     Returns: 200 + user data on success, 401 on bad credentials.
     """
-    data = request.get_json()
+    data = request.get_json() or {}
     username = data.get("username")
     password = data.get("password")
 
@@ -44,7 +44,7 @@ def register_step1():
     Validates input and creates the User row (without profile metrics yet).
     Returns: 201 on success, 400 on validation error.
     """
-    data = request.get_json()
+    data = request.get_json() or {}
     email = data.get("email")
     username = data.get("username")
     password = data.get("password")
@@ -73,7 +73,7 @@ def register_step2():
     Saves profile metrics and initial lift baselines.
     Returns: 200 on success.
     """
-    data = request.get_json()
+    data = request.get_json() or {}
 
     # TODO: fetch User by data["userId"]
     # TODO: update experience_level, program_length_weeks, target_weekly_sets

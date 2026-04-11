@@ -1,0 +1,13 @@
+{
+  "name": "gym-analytics-app",
+  "version": "1.0.0",
+  "description": "Electron shell for the Gym Analytics desktop app",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "start:backend": "py run.py"
+  },
+  "devDependencies": {
+    "electron": "^35.1.5"
+  }
+}

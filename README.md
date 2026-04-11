@@ -47,6 +47,6 @@ Some backend routes are still scaffolded and contain placeholder logic, but the 
 
 Likely next improvements include:
 - connecting the frontend forms and buttons to the Flask backend routes
-- replacing placeholder route logic in `app/auth.py` and `app/stats.py`
+- replacing placeholder route logic in app/auth.py and app/stats.py
 - moving database secrets into environment variables
 - packaging the Electron app into a distributable installer

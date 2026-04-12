@@ -1,15 +1,20 @@
 from flask import Flask
 from .extensions import db, login_manager
 from .routes import auth_bp, stats_bp
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def create_app():
     app = Flask(__name__)
 
     # ── Config ──────────────────────────────────────────────────────────────
-    app.config["SECRET_KEY"] = "change-me-in-production"
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "change-me-in-production")
     app.config["SQLALCHEMY_DATABASE_URI"] = (
-        "mysql+pymysql://USER:PASSWORD@localhost:3306/gympal"
+        f"mysql+pymysql://{os.getenv('DB_USER', 'root')}:{os.getenv('DB_PASSWORD', 'password')}@"
+        f"{os.getenv('DB_HOST', 'localhost')}:{os.getenv('DB_PORT', '3306')}/{os.getenv('DB_NAME', 'gympal')}"
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 

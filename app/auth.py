@@ -1,5 +1,9 @@
 from flask import Blueprint, request, jsonify
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from .extensions import db
+from .models import User, Lift, BodyMetricEntry
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -7,77 +11,174 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 @auth_bp.route("/login", methods=["POST"])
 def login():
     """
-    Called when the user clicks Confirm on the Login page.
     Expects JSON: { "username": "...", "password": "..." }
-    Returns: 200 + user data on success, 401 on bad credentials.
+    Returns 200 + user data on success, 401 on bad credentials.
     """
     data = request.get_json() or {}
-    username = data.get("username")
-    password = data.get("password")
+    username = (data.get("username") or "").strip()
+    password = data.get("password") or ""
 
-    # TODO: query User by username, verify password hash, call login_user(user)
-    # Example:
-    #   user = User.query.filter_by(username=username).first()
-    #   if not user or not check_password_hash(user.password_hash, password):
-    #       return jsonify({"error": "Invalid credentials"}), 401
-    #   login_user(user)
-    #   return jsonify({"message": "Logged in", "username": user.username}), 200
+    if not username or not password:
+        return jsonify({"error": "Username and password are required"}), 400
 
-    return jsonify({"message": "login skeleton – not yet implemented"}), 200
+    user = User.query.filter_by(username=username).first()
+    if not user or not check_password_hash(user.password_hash, password):
+        return jsonify({"error": "Invalid username or password"}), 401
+
+    login_user(user)
+    return jsonify({
+        "message": "Logged in successfully",
+        "user": {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "experienceLevel": user.experience_level,
+            "programLengthWeeks": user.program_length_weeks,
+            "targetWeeklySets": user.target_weekly_sets,
+        }
+    }), 200
 
 
 @auth_bp.route("/logout", methods=["POST"])
 @login_required
 def logout():
-    """
-    Called when the user clicks Log out on the Home page.
-    """
-    # TODO: logout_user()
-    return jsonify({"message": "logout skeleton – not yet implemented"}), 200
+    """Logs out the current user and clears the session."""
+    logout_user()
+    return jsonify({"message": "Logged out successfully"}), 200
 
 
 @auth_bp.route("/register/step1", methods=["POST"])
 def register_step1():
     """
-    Called when the user continues from InformationSection (step 1).
+    Step 1: create the account credentials.
     Expects JSON: { "email": "...", "username": "...", "password": "...", "confirmPassword": "..." }
-    Validates input and creates the User row (without profile metrics yet).
-    Returns: 201 on success, 400 on validation error.
+    Returns 201 + new user id on success.
     """
     data = request.get_json() or {}
-    email = data.get("email")
-    username = data.get("username")
-    password = data.get("password")
-    confirm_password = data.get("confirmPassword")
+    email = (data.get("email") or "").strip().lower()
+    username = (data.get("username") or "").strip()
+    password = data.get("password") or ""
+    confirm_password = data.get("confirmPassword") or ""
 
-    # TODO: validate fields, check passwords match, check email/username not taken
-    # TODO: hash password with generate_password_hash(password)
-    # TODO: create User(email=email, username=username, password_hash=hashed)
-    # TODO: db.session.add(user); db.session.commit()
-    # TODO: return the new user's id so the frontend can pass it to step 2
+    # Validate required fields
+    if not email or not username or not password:
+        return jsonify({"error": "Email, username, and password are required"}), 400
 
-    return jsonify({"message": "register step1 skeleton – not yet implemented"}), 201
+    if password != confirm_password:
+        return jsonify({"error": "Passwords do not match"}), 400
+
+    if len(password) < 8:
+        return jsonify({"error": "Password must be at least 8 characters"}), 400
+
+    # Check uniqueness
+    if User.query.filter_by(email=email).first():
+        return jsonify({"error": "An account with that email already exists"}), 409
+
+    if User.query.filter_by(username=username).first():
+        return jsonify({"error": "That username is already taken"}), 409
+
+    user = User(
+        email=email,
+        username=username,
+        password_hash=generate_password_hash(password),
+    )
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({"message": "Account created", "userId": user.id}), 201
 
 
 @auth_bp.route("/register/step2", methods=["POST"])
 def register_step2():
     """
-    Called when the user continues from InformationSection2 (step 2).
+    Step 2: save training profile and initial lift baselines.
     Expects JSON: {
         "userId": 1,
         "experienceLevel": "beginner",
         "programLengthWeeks": 12,
         "targetWeeklySets": 20,
-        "lifts": [{ "exerciseName": "Squat", "bestWeightKg": 100, "bestReps": 5 }]
+        "startingBodyweightKg": 82.5,
+        "lifts": [
+            { "exerciseName": "Squat", "bestWeightKg": 140, "bestReps": 1 },
+            { "exerciseName": "Bench Press", "bestWeightKg": 100, "bestReps": 1 },
+            { "exerciseName": "Deadlift", "bestWeightKg": 180, "bestReps": 1 }
+        ]
     }
-    Saves profile metrics and initial lift baselines.
-    Returns: 200 on success.
     """
     data = request.get_json() or {}
 
-    # TODO: fetch User by data["userId"]
-    # TODO: update experience_level, program_length_weeks, target_weekly_sets
-    # TODO: bulk-insert Lift rows from data["lifts"]
-    # TODO: db.session.commit()
+    user_id = data.get("userId")
+    if not user_id:
+        return jsonify({"error": "userId is required"}), 400
 
-    return jsonify({"message": "register step2 skeleton – not yet implemented"}), 200
+    user = db.session.get(User, int(user_id))
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Save training profile
+    user.experience_level = (data.get("experienceLevel") or "").strip() or None
+    user.program_length_weeks = int(data["programLengthWeeks"]) if data.get("programLengthWeeks") else 12
+    user.target_weekly_sets = int(data["targetWeeklySets"]) if data.get("targetWeeklySets") else None
+
+    # Save initial body metric snapshot if provided
+    starting_bw = data.get("startingBodyweightKg")
+    if starting_bw:
+        try:
+            bw_float = float(starting_bw)
+            entry = BodyMetricEntry(user_id=user.id, body_weight_kg=bw_float)
+            db.session.add(entry)
+        except (TypeError, ValueError):
+            pass
+
+    # Save initial lift baselines
+    lifts_payload = data.get("lifts") or []
+    for raw in lifts_payload:
+        exercise_name = (raw.get("exerciseName") or "").strip()
+        if not exercise_name:
+            continue
+        try:
+            weight_kg = float(raw["bestWeightKg"]) if raw.get("bestWeightKg") else None
+            best_reps = int(raw["bestReps"]) if raw.get("bestReps") else None
+        except (TypeError, ValueError):
+            continue
+
+        # Only insert if no existing record for this user + exercise
+        existing = Lift.query.filter_by(user_id=user.id, exercise_name=exercise_name).first()
+        if not existing:
+            lift = Lift(
+                user_id=user.id,
+                exercise_name=exercise_name,
+                best_weight_kg=weight_kg,
+                best_reps=best_reps,
+            )
+            db.session.add(lift)
+
+    db.session.commit()
+    login_user(user)
+
+    return jsonify({
+        "message": "Profile saved",
+        "user": {
+            "id": user.id,
+            "username": user.username,
+            "experienceLevel": user.experience_level,
+            "programLengthWeeks": user.program_length_weeks,
+            "targetWeeklySets": user.target_weekly_sets,
+        }
+    }), 200
+
+
+@auth_bp.route("/me", methods=["GET"])
+@login_required
+def me():
+    """Returns the currently authenticated user's profile."""
+    return jsonify({
+        "user": {
+            "id": current_user.id,
+            "username": current_user.username,
+            "email": current_user.email,
+            "experienceLevel": current_user.experience_level,
+            "programLengthWeeks": current_user.program_length_weeks,
+            "targetWeeklySets": current_user.target_weekly_sets,
+        }
+    }), 200

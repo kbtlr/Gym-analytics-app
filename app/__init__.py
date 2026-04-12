@@ -12,7 +12,7 @@ def create_app():
 
     # ── Config ──────────────────────────────────────────────────────────────
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "change-me-in-production")
-    app.config["SQLALCHEMY_DATABASE_URI"] = (
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DB_URI") or (
         f"mysql+pymysql://{os.getenv('DB_USER', 'root')}:{os.getenv('DB_PASSWORD', 'password')}@"
         f"{os.getenv('DB_HOST', 'localhost')}:{os.getenv('DB_PORT', '3306')}/{os.getenv('DB_NAME', 'gympal')}"
     )

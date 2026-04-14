@@ -99,7 +99,11 @@ function prefillDateInputs() {
     document.getElementById('workoutDate').value = today;
 }
 
+let appReady = false;
+
 async function checkAuthStatus() {
+    if (!appReady) return;
+    
     try {
         const res = await fetch(`${API_BASE}/auth/me`, {credentials: "include"});
         if (res.ok) {
@@ -110,6 +114,12 @@ async function checkAuthStatus() {
         }
     } catch (e) {}
 }
+
+setInterval(() => {
+    if (activeUserId === null) {
+        checkAuthStatus();
+    }
+}, 3000);
 
 
 // ---------------------------------------------------------------------------
@@ -151,7 +161,10 @@ async function handleRegisterStep1() {
 
     if (res.ok) {
         const data = await res.json();
+        console.log("✅ Got userId:", data.userId, typeof data.userId);
         activeUserId = parseInt(data.userId);
+        document.getElementById('internalPendingUserId').value = activeUserId;
+        console.log("✅ Active userId set to:", activeUserId, typeof activeUserId);
         newPage('InformationSection2', 'InformationSection');
     } else {
         const err = await res.json();
@@ -160,8 +173,12 @@ async function handleRegisterStep1() {
 }
 
 async function handleRegisterStep2() {
+    const userId = parseInt(document.getElementById('internalPendingUserId').value);
+    
+    console.log("🔘 Submit clicked, userId is:", userId, typeof userId);
+    
     const payload = {
-        userId: activeUserId,
+        userId: userId,
         experienceLevel: document.getElementById('experienceLevel').value,
         programLengthWeeks: parseInt(document.getElementById('programLengthWeeks').value),
         targetWeeklySets: parseInt(document.getElementById('targetVolume').value),
@@ -182,7 +199,7 @@ async function handleRegisterStep2() {
 
     if (res.ok) {
         newPage('HomePage', 'InformationSection2');
-        await refreshDashboard();
+        setTimeout(refreshDashboard, 500);
     } else {
         const err = await res.json();
         alert(err.error || "Could not complete registration");

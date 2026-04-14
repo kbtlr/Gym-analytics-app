@@ -9,6 +9,7 @@
 
 <body>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <input type="hidden" id="internalPendingUserId" value="" />
     <script src="./scripts/main.js" type="text/javascript"></script>
 
     <section id="Startup">
@@ -76,7 +77,7 @@
                 </label>
                 <div class="form-actions">
                     <a href="#" class="btn-secondary" onclick="return newPage('LoginPage', 'InformationSection')">Go back</a>
-                    <a href="#" class="btn-primary" onclick="return newPage('InformationSection2', 'InformationSection')">Continue</a>
+                    <button type="submit" class="btn-primary">Continue</button>
                 </div>
             </form>
         </div>

@@ -151,7 +151,7 @@ async function handleRegisterStep1() {
 
     if (res.ok) {
         const data = await res.json();
-        activeUserId = data.userId;
+        activeUserId = parseInt(data.userId);
         newPage('InformationSection2', 'InformationSection');
     } else {
         const err = await res.json();
@@ -183,6 +183,9 @@ async function handleRegisterStep2() {
     if (res.ok) {
         newPage('HomePage', 'InformationSection2');
         await refreshDashboard();
+    } else {
+        const err = await res.json();
+        alert(err.error || "Could not complete registration");
     }
 }
 

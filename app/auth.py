@@ -108,10 +108,15 @@ def register_step2():
     data = request.get_json() or {}
 
     user_id = data.get("userId")
-    if not user_id:
+    if user_id is None or user_id == '':
         return jsonify({"error": "userId is required"}), 400
 
-    user = db.session.get(User, int(user_id))
+    try:
+        user_id = int(user_id)
+    except (ValueError, TypeError):
+        return jsonify({"error": "userId must be a valid number"}), 400
+
+    user = db.session.get(User, user_id)
     if not user:
         return jsonify({"error": "User not found"}), 404
 

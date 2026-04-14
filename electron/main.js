@@ -16,6 +16,10 @@ function createWindow() {
     }
   });
 
+  mainWindow.webContents.session.clearCache().catch(() => {});
+  mainWindow.webContents.session.clearStorageData().catch(() => {});
+  
+  mainWindow.webContents.openDevTools();
   mainWindow.loadFile(path.join(__dirname, "..", "core.html"));
 }
 

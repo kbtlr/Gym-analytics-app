@@ -106,7 +106,7 @@ def register_step2():
     }
     """
     data = request.get_json() or {}
-
+    
     user_id = data.get("userId")
     if user_id is None or user_id == '':
         return jsonify({"error": "userId is required"}), 400
@@ -161,7 +161,9 @@ def register_step2():
     db.session.commit()
     login_user(user)
 
-    return jsonify({
+    db.session.commit()
+
+    resp = jsonify({
         "message": "Profile saved",
         "user": {
             "id": user.id,
@@ -170,7 +172,10 @@ def register_step2():
             "programLengthWeeks": user.program_length_weeks,
             "targetWeeklySets": user.target_weekly_sets,
         }
-    }), 200
+    })
+    
+    login_user(user, remember=True)
+    return resp, 200
 
 
 @auth_bp.route("/me", methods=["GET"])

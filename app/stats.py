@@ -8,9 +8,7 @@ from .models import BodyMetricEntry, Lift, Workout, WorkoutSet
 
 stats_bp = Blueprint("stats", __name__, url_prefix="/stats")
 
-# ---------------------------------------------------------------------------
-# Periodization constants
-# ---------------------------------------------------------------------------
+### Training Periodization Constants
 
 # Volume multipliers per micro-week within a 4-week meso block.
 # Week 1–3 = progressive accumulation; Week 4 = deload (~50 % of peak).
@@ -50,9 +48,7 @@ BIG_THREE_ALIASES = {
 }
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
+### Utility Helper Functions
 
 def _parse_datetime(value):
     if not value:
@@ -234,8 +230,8 @@ def _build_volume_recommendation(user, cycle_data):
             min(recommended_sets, MAX_WEEKLY_SETS[experience][lift]),
         )
 
-        # Target working weight as a fraction of e1RM, scaled by meso intensity
-        # Deload = 60 % of e1RM; normal weeks scale from ~70 % up to ~85 %
+        ### Target working weight as fraction of 1RM, adjusted for meso block progress
+        ### Deload weeks use 60% 1RM; normal weeks progress from 70% up to 85%
         if is_deload:
             intensity_fraction = 0.60
         else:
@@ -245,7 +241,7 @@ def _build_volume_recommendation(user, cycle_data):
         e1rm = best_e1rm[lift]
         target_weight_kg = round(e1rm * intensity_fraction, 1) if e1rm > 0 else None
 
-        # Recommended reps per set: deload = higher reps / lower weight; peak = lower reps
+        ### Rep scheme: deload uses higher reps, peak weeks use lower reps
         if is_deload:
             target_reps = 8
         else:
@@ -286,9 +282,7 @@ def _phase_label(micro_week, meso_block):
     return f"Meso {meso_block} — {base}"
 
 
-# ---------------------------------------------------------------------------
-# Routes — body metrics
-# ---------------------------------------------------------------------------
+### Body Metrics Routes
 
 @stats_bp.route("/body-metrics", methods=["GET", "POST"])
 @login_required
@@ -366,9 +360,7 @@ def body_metrics_summary():
     return jsonify({"data": summary}), 200
 
 
-# ---------------------------------------------------------------------------
-# Routes — volume
-# ---------------------------------------------------------------------------
+### Volume Tracking Routes
 
 @stats_bp.route("/volume", methods=["GET"])
 @login_required
@@ -437,9 +429,7 @@ def big_three_volume():
     return jsonify({"data": data}), 200
 
 
-# ---------------------------------------------------------------------------
-# Routes — personal bests
-# ---------------------------------------------------------------------------
+### Personal Best Tracking Routes
 
 @stats_bp.route("/personal-bests", methods=["GET"])
 @login_required
@@ -497,9 +487,7 @@ def big_three_personal_bests():
     return jsonify({"data": summary}), 200
 
 
-# ---------------------------------------------------------------------------
-# Routes — cycle progress & volume recommendations
-# ---------------------------------------------------------------------------
+### Training Cycle & Recommendation Routes
 
 @stats_bp.route("/cycle-progress", methods=["GET"])
 @login_required
@@ -538,9 +526,7 @@ def volume_recommendation():
     return jsonify({"data": recommendation}), 200
 
 
-# ---------------------------------------------------------------------------
-# Routes — workouts
-# ---------------------------------------------------------------------------
+### Workout Logging Routes
 
 @stats_bp.route("/workouts", methods=["GET"])
 @login_required
@@ -608,7 +594,7 @@ def log_workout():
         set_volume = weight_kg * reps
         total_volume += set_volume
 
-        # Auto-update personal best
+        ### Automatically check and update personal best records
         lift = db.session.query(Lift).filter_by(user_id=current_user.id, exercise_name=exercise_name).first()
         is_new_pb = False
 
@@ -659,9 +645,7 @@ def log_workout():
     }), 201
 
 
-# ---------------------------------------------------------------------------
-# Routes — dashboard summary
-# ---------------------------------------------------------------------------
+### Dashboard Summary Routes
 
 @stats_bp.route("/dashboard-summary", methods=["GET"])
 @login_required

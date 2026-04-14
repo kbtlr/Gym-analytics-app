@@ -60,7 +60,7 @@ def register_step1():
     password = data.get("password") or ""
     confirm_password = data.get("confirmPassword") or ""
 
-    # Validate required fields
+    ### Validate required input fields
     if not email or not username or not password:
         return jsonify({"error": "Email, username, and password are required"}), 400
 
@@ -70,7 +70,7 @@ def register_step1():
     if len(password) < 8:
         return jsonify({"error": "Password must be at least 8 characters"}), 400
 
-    # Check uniqueness
+    ### Verify that email and username are available
     if User.query.filter_by(email=email).first():
         return jsonify({"error": "An account with that email already exists"}), 409
 
@@ -115,12 +115,12 @@ def register_step2():
     if not user:
         return jsonify({"error": "User not found"}), 404
 
-    # Save training profile
+    ### Save user training profile preferences
     user.experience_level = (data.get("experienceLevel") or "").strip() or None
     user.program_length_weeks = int(data["programLengthWeeks"]) if data.get("programLengthWeeks") else 12
     user.target_weekly_sets = int(data["targetWeeklySets"]) if data.get("targetWeeklySets") else None
 
-    # Save initial body metric snapshot if provided
+    ### Record starting bodyweight if provided
     starting_bw = data.get("startingBodyweightKg")
     if starting_bw:
         try:
@@ -130,7 +130,7 @@ def register_step2():
         except (TypeError, ValueError):
             pass
 
-    # Save initial lift baselines
+    ### Record initial lift personal bests
     lifts_payload = data.get("lifts") or []
     for raw in lifts_payload:
         exercise_name = (raw.get("exerciseName") or "").strip()
@@ -142,7 +142,7 @@ def register_step2():
         except (TypeError, ValueError):
             continue
 
-        # Only insert if no existing record for this user + exercise
+        ### Only add if this user doesn't already have a record for this exercise
         existing = Lift.query.filter_by(user_id=user.id, exercise_name=exercise_name).first()
         if not existing:
             lift = Lift(

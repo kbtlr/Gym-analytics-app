@@ -10,12 +10,14 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
 
-    # Step-2 registration fields
+    ### Registration Fields
+    # Collected during onboarding step 2
     experience_level = db.Column(db.String(50))        # beginner / intermediate / advanced
     program_length_weeks = db.Column(db.Integer)        # total macrocycle length
     target_weekly_sets = db.Column(db.Integer)          # aspiring weekly set volume
 
-    # Relationships
+    ### Related Data
+    # Other records that belong to this user
     lifts = db.relationship("Lift", backref="user", lazy=True)
     workouts = db.relationship("Workout", backref="user", lazy=True)
     body_metrics = db.relationship("BodyMetricEntry", backref="user", lazy=True)
@@ -87,7 +89,8 @@ class Workout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     performed_at = db.Column(db.DateTime, server_default=db.func.now())
-    total_volume_kg = db.Column(db.Float, default=0.0)  # sum of weight * reps across all sets
+    total_volume_kg = db.Column(db.Float, default=0.0)
+    ### Total workout volume is calculated as sum of (weight * reps) across all sets
 
     sets = db.relationship("WorkoutSet", backref="workout", lazy=True)
 

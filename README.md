@@ -16,8 +16,6 @@ The current structure keeps the existing interface while moving away from a brow
 ### Backend
 - Python
 - Flask
-- Flask-Login
-- Flask-SQLAlchemy
 - PyMySQL
 
 ### Desktop shell
@@ -37,16 +35,9 @@ The application is designed to support:
 - personal best tracking
 - total volume tracking over time
 - cycle progress tracking
-- a desktop app experience using the existing frontend layout
-
-Some backend routes are still scaffolded and contain placeholder logic, but the project structure is in place.
 
 
 
-## Next steps
 
-Likely next improvements include:
-- connecting the frontend forms and buttons to the Flask backend routes
-- replacing placeholder route logic in app/auth.py and app/stats.py
-- moving database secrets into environment variables
-- packaging the Electron app into a distributable installer
+
+

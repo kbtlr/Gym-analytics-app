@@ -34,14 +34,15 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-y: scroll;
 }
 
 body {
     min-height: 100vh;
+    width: 100vw;
     background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     color: var(--text-main);
     padding: 32px 20px;
 }
@@ -52,7 +53,7 @@ section {
     justify-content: center;
 }
 
-#StartupPage,
+#StartupPage div,
 #LoginPage,
 #InformationSection,
 #InformationSection2,
@@ -74,6 +75,10 @@ section {
 #InformationSection2,
 #HomePage {
     width: min(100%, var(--content-width));
+    height: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 a {
@@ -90,7 +95,7 @@ p {
     display: block;
     margin-bottom: 15px;
     font-size: clamp(2rem, 3vw, 2.8rem);
-    font-weight: 800;
+    font-weight: 300;
     line-height: 1.1;
 }
 

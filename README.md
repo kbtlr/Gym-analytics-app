@@ -36,6 +36,14 @@ The application is designed to support:
 - total volume tracking over time
 - cycle progress tracking
 
+## To Do
+
+Next targets:
+- UI updates
+- Backtack glitch
+- Data edge cases
+
+
 
 
 

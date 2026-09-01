@@ -1,9 +1,7 @@
 # Gym-analytics-app
-
 A desktop-first gym analytics application for tracking training progress, workout volume, and personal bests over time.
 
 ## Project overview
-
 This project combines:
 - a Python Flask backend for authentication, data handling, and database access
 - an Electron desktop shell that wraps the current HTML/CSS/JavaScript interface
@@ -11,8 +9,15 @@ This project combines:
 
 The current structure keeps the existing interface while moving away from a browser-only workflow. The UI is loaded inside Electron as a desktop app, while the Python backend remains available for auth, stats, and persistence.
 
-## Current stack
+In one window, type:
+npm run start:backend
 
+In another, run the shell with:
+npm run start
+
+
+
+## Current stack
 ### Backend
 - Python
 - Flask
@@ -28,7 +33,6 @@ The current structure keeps the existing interface while moving away from a brow
 - JavaScript
 
 ## Features and intended direction
-
 The application is designed to support:
 - user login and registration
 - workout logging
@@ -37,11 +41,8 @@ The application is designed to support:
 - cycle progress tracking
 
 ## To Do
-
-Next targets:
-- UI updates
-- Backtack glitch
-- Data edge cases
+Current UI is skewed on the main dashboard. Login credentials are successfully saved so UI troubleshooting is viable now.
+Will work on UI before attending to backtrack glitch and data handling.
 
 
 

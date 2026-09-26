@@ -32,6 +32,9 @@ npm run start
 - CSS
 - JavaScript
 
+  <img width="1920" height="1009" alt="Your Gym Pal 27_09_2026 00_39_51" src="https://github.com/user-attachments/assets/ce28b5f5-94ab-4943-bfc4-314895af67e8" />
+
+
 ## Features and intended direction
 The application is designed to support:
 - user login and registration

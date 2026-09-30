@@ -20,12 +20,17 @@
       "electron/**/*"
     ],
     "extraResources": [
-      { "from": "backend-dist/gym-backend.exe", "to": "backend/gym-backend.exe" }
+      {
+        "from": "backend-dist/gym-backend.exe",
+        "to": "backend/gym-backend.exe"
+      }
     ],
-    "win": { "target": "nsis" }
+    "win": {
+      "target": "nsis"
+    }
   },
   "devDependencies": {
-    "electron": "^35.1.5",
+    "electron": "^44.5.1",
     "electron-builder": "^26.0.0"
   }
 }

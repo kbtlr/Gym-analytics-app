@@ -1,13 +1,31 @@
 {
   "name": "gym-analytics-app",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Electron shell for the Gym Analytics desktop app",
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
-    "start:backend": "py run.py"
+    "start:backend": "py run.py",
+    "build:backend": "pyinstaller --onefile --name gym-backend --distpath backend-dist run.py",
+    "dist": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.kbtlr.gymanalytics",
+    "productName": "Your Gym Pal",
+    "files": [
+      "core.html",
+      "core-style.css",
+      "scripts/**/*",
+      "fonts/**/*",
+      "electron/**/*"
+    ],
+    "extraResources": [
+      { "from": "backend-dist/gym-backend.exe", "to": "backend/gym-backend.exe" }
+    ],
+    "win": { "target": "nsis" }
   },
   "devDependencies": {
-    "electron": "^35.1.5"
+    "electron": "^35.1.5",
+    "electron-builder": "^26.0.0"
   }
 }

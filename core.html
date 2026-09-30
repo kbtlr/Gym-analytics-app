@@ -10,7 +10,7 @@
 <body>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <input type="hidden" id="internalPendingUserId" value="" />
-    <script src="./scripts/main.js" type="text/javascript"></script>
+    <script src="./scripts/main.js" type="text/javascript" defer></script>
 
     <section id="Startup">
         <div id="StartupPage" class="page-shell page-panel">
@@ -40,6 +40,9 @@
                     <span>Password</span>
                     <input id="loginPassword" type="password" placeholder="Password"/>
                 </label>
+                <p id="loginError" class="form-error" role="alert" hidden></p>
+                <p id="registerError" class="form-error" role="alert" hidden></p>
+                <p id="registerStep2Error" class="form-error" role="alert" hidden></p>
                 <div class="form-actions">
                     <a href="#" class="btn-secondary" onclick="return newPage('StartupPage', 'LoginPage')">Back</a>
                     <button type="submit" class="btn-primary">Confirm</button>

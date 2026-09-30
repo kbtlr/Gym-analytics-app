@@ -218,6 +218,14 @@ button.ghost {
     justify-content: center;
     margin-top: 18px;
 }
+.form-error {
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    margin: 0.25rem 0 0.75rem;
+}
+.form-error[hidden] {
+    display: none;
+}
 
 .metric-chip,
 .chip,

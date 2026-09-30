@@ -46,10 +46,3 @@ The application is designed to support:
 ## To Do
 Current UI is skewed on the main dashboard. Login credentials are successfully saved so UI troubleshooting is viable now.
 Will work on UI before attending to backtrack glitch and data handling.
-
-
-
-
-
-
-

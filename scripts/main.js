@@ -126,23 +126,51 @@ setInterval(() => {
 // Auth
 // ---------------------------------------------------------------------------
 
+
+// Login focus loss fix: Retain focus on electron shell on pop up, because 
+// the electron shell steals focus when the password field is filled in.
 async function handleLogin() {
     const username = document.getElementById('loginUsername').value.trim();
     const password = document.getElementById('loginPassword').value;
+    const passwordInput = document.getElementById('loginPassword');
 
-    const res = await fetch(`${API_BASE}/auth/login`, {
-        method: "POST",
-        credentials: "include",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({username, password})
-    });
+    clearError('loginError');
 
-    if (res.ok) {
-        newPage('HomePage', 'LoginPage');
-        await refreshDashboard();
-    } else {
-        alert("Invalid username or password");
+    if (!username || !password) {
+        showError('loginError', 'Please enter your username and password');
+        return;
     }
+
+    try {
+        const res = await fetch(`${API_BASE}/auth/login`, {
+            method: "POST",
+            credentials: "include",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username, password})
+        });
+
+        if (res.ok) {
+            newPage('HomePage', 'LoginPage');
+            await refreshDashboard();
+        } else {
+            showError('loginError', 'Invalid username or password');
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+    } catch (err) {
+        showError('loginError', 'Could not reach the server. Is the backend running?');
+    }
+}
+
+function showError(elementId, message) {
+    const el = document.getElementById(elementId);
+    el.textContent = message;
+    el.hidden = false;
+}
+function clearError(elementId) {
+    const el = document.getElementById(elementId);
+    el.textContent = '';
+    el.hidden = true;
 }
 
 async function handleRegisterStep1() {

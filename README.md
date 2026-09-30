@@ -44,5 +44,4 @@ The application is designed to support:
 - cycle progress tracking
 
 ## To Do
-Current UI is skewed on the main dashboard. Login credentials are successfully saved so UI troubleshooting is viable now.
-Will work on UI before attending to backtrack glitch and data handling.
+First viable tested application. Next focus will be on finetuning base functionalities, data security and basic testing (Non-numerical inputs, re-editing of previous inputs etc.)

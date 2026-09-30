@@ -44,4 +44,4 @@ The application is designed to support:
 - cycle progress tracking
 
 ## To Do
-First viable tested application. Next focus will be on finetuning base functionalities, data security and basic testing (Non-numerical inputs, re-editing of previous inputs etc.)
+Post v0.0.1 release. Next focus will be on finetuning base functionalities, data security and basic testing (Non-numerical inputs, re-editing of previous inputs etc.)

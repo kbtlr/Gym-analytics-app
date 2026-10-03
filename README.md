@@ -44,4 +44,8 @@ The application is designed to support:
 - cycle progress tracking
 
 ## To Do
-Post v0.0.1 release. Next focus will be on finetuning base functionalities, data security and basic testing (Non-numerical inputs, re-editing of previous inputs etc.)
+Post v0.0.1 release. Working username/password system, dashboard next:
+ - Compartmentalise lifts and charts neatly (Weekly workouts, volume and next recommended volume/workout progressions)
+  . Sort HTML grouping first
+  . Input for above workouts, grouped nicely with associated logins on dbs
+  . Increase volume depending on cycle and experience level (May be more formulae there)
